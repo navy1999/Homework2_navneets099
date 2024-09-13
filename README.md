@@ -29,7 +29,7 @@ You must zip this folder and submit to Canvas
 
 ## Building and Running the template
 
-The project uses _Gradle_ build system to compile, package and to run junit tests. In case you are unable to run the below `gradle` commands, please check compatibility of the installed _JDK_ against that of _Gradle (7.4)_. You may have to lower your _JDK_ version to be compatible to that of _Gradle_ ([compatibility matrix](https://docs.gradle.org/current/userguide/compatibility.html)). For reference, we have used _openjdk 17.0.12_ to validate this project.
+The project uses _Gradle_ build system to compile, package and to run junit tests. In case you are unable to run the below `gradle` commands, please check compatibility of the installed _JDK_ against that of _Gradle (8.8)_. You may have to lower your _JDK_ version to be compatible to that of _Gradle_ ([compatibility matrix](https://docs.gradle.org/current/userguide/compatibility.html)).
 
 Before executing the `gradlew` script, please make the script excutable:
 
