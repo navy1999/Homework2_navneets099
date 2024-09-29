@@ -36,7 +36,7 @@ public class LBakery implements Lock {
         int i = ((ThreadId)Thread.currentThread()).getThreadId();
         for(int j = 0; j < l; j++) {
             flag[j][i].set(true);
-            Timestamp max = findMaxTimeStamp(timestampSystems[i].scan());
+            Timestamp max = findMaxTimeStamp(timestampSystems[j].scan());
             label[j][i] = new LBakeryTimestamp(max.getValue() +1, i);
             timestampSystems[j].label(label[j][i],i);
             for(int k = 0; k < n; k++) {
@@ -50,20 +50,20 @@ public class LBakery implements Lock {
 
     private Timestamp findMaxTimeStamp(Timestamp[] timestamps) {
         long max = Long.MIN_VALUE;
-        Timestamp maxTimeStamp = timestamps[0];
+        Timestamp maxTimeStamp = null;
         for(Timestamp timestamp : timestamps) {
-            if(timestamp!=null && timestamp.getValue() > max) {
+            if(timestamp !=null && timestamp.getValue() > max) {
                 maxTimeStamp = timestamp;
                 max = timestamp.getValue();
             }
         }
-        return maxTimeStamp;
+        return maxTimeStamp != null ? maxTimeStamp : new LBakeryTimestamp(0, 0);
     }
 
     @Override
     public void unlock() {
         int i = ((ThreadId)Thread.currentThread()).getThreadId();
-        for(int j = l-i; j>= 0 ;j--){
+        for(int j = l-1; j >= 0 ;j--){
             flag[j][i].set(false);
         }
 
