@@ -40,8 +40,8 @@ public class LBakery implements Lock {
             label[j][i] = new LBakeryTimestamp(max.getValue() +1, i);
             timestampSystems[j].label(label[j][i],i);
             for(int k = 0; k < n; k++) {
-                while(flag[j][k].get() && k!=i && label[j][k] != null && label[j][k].compare(label[j][i])) {
-
+                while(flag[j][k].get() && k!=i && label[j][k] != null && label[j][i].compare(label[j][k])) {
+                    Thread.yield();
                 }
             }
 
