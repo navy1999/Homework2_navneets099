@@ -6,8 +6,8 @@ import edu.vt.ece.bench.ThreadId;
 
 public class Peterson implements Lock{
 
-    private AtomicBoolean flag[] = new AtomicBoolean[2];
-    private AtomicInteger victim;
+    private volatile AtomicBoolean flag[] = new AtomicBoolean[2];
+    private volatile AtomicInteger victim;
 
     public Peterson() {
         flag[0] = new AtomicBoolean();

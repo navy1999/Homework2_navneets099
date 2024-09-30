@@ -11,7 +11,7 @@ public class Bakery implements Lock {
     private volatile AtomicBoolean[] flag;
 
     private volatile Timestamp[] label;
-    private TimestampSystem timestampSystem;
+    private volatile TimestampSystem timestampSystem;
     public Bakery() {
         this(2);
     }

@@ -13,7 +13,7 @@ public class LBakery implements Lock {
     private volatile AtomicInteger activeThreads;
     private volatile AtomicBoolean[][] flag;
     private volatile Timestamp[][] label;
-    private TimestampSystem[] timestampSystems;
+    private volatile TimestampSystem[] timestampSystems;
     public LBakery(int l, int n) {
         this.l = l;
         this.n = n;
