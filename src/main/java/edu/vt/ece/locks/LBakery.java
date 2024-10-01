@@ -13,7 +13,7 @@ public class LBakery implements Lock {
     private final int n;
     private volatile AtomicInteger activeThreads;
     private volatile AtomicBoolean[][] flag;
-    private volatile AtomicReference<Timestamp>[][] label;
+    private final AtomicReference<Timestamp>[][] label;
     private volatile TimestampSystem[] timestampSystems;
     public LBakery(){
         this(Runtime.getRuntime().availableProcessors(),Runtime.getRuntime().availableProcessors());
@@ -47,12 +47,11 @@ public class LBakery implements Lock {
             timestampSystems[j].label(newLabel, i);
             for (int k = 0; k < n; k++) {
                 while ((flag[j][k].get() && k != i && label[j][i].get().compare(label[j][k].get())) || activeThreads.get() >= l) {
-                    Thread.yield();
+
                 }
             }
             activeThreads.incrementAndGet();
         }
-
     }
 
     private Timestamp findMaxTimeStamp(Timestamp[] timestamps) {
@@ -70,12 +69,11 @@ public class LBakery implements Lock {
     @Override
     public void unlock() {
         int i = ((ThreadId)Thread.currentThread()).getThreadId();
-        activeThreads.decrementAndGet();
+
         for(int j = l-1; j >= 0 ;j--){
             flag[j][i].set(false);
+            activeThreads.decrementAndGet();
         }
-
-
     }
 
     private static class LBakeryTimestamp implements Timestamp{
