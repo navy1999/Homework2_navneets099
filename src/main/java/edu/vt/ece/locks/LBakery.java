@@ -6,13 +6,14 @@ import edu.vt.ece.bench.ThreadId;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class LBakery implements Lock {
     private final int l;
     private final int n;
     private volatile AtomicInteger activeThreads;
     private volatile AtomicBoolean[][] flag;
-    private volatile Timestamp[][] label;
+    private volatile AtomicReference<Timestamp>[][] label;
     private volatile TimestampSystem[] timestampSystems;
     public LBakery(){
         this(Runtime.getRuntime().availableProcessors(),Runtime.getRuntime().availableProcessors());
@@ -21,7 +22,7 @@ public class LBakery implements Lock {
         this.l = l;
         this.n = n;
         this.flag = new AtomicBoolean[l][n];
-        this.label = new Timestamp[l][n];
+        this.label = new AtomicReference[l][n];
         this.timestampSystems = new LBakeryTimestampSystem[l];
         this.activeThreads = new AtomicInteger(0);
 
@@ -30,7 +31,7 @@ public class LBakery implements Lock {
             timestampSystems[i] = new LBakeryTimestampSystem(n);
             for(int j = 0; j < n; j++) {
                 flag[i][j] = new AtomicBoolean(false);
-                label[i][j] = new LBakeryTimestamp(0,j);
+                label[i][j] = new AtomicReference<>(null);
             }
         }
     }
@@ -41,10 +42,11 @@ public class LBakery implements Lock {
         for(int j = 0; j < l; j++) {
             flag[j][i].set(true);
             Timestamp max = findMaxTimeStamp(timestampSystems[j].scan());
-            label[j][i] = new LBakeryTimestamp((max != null) ? max.getValue() + 1 : 1, i);
-            timestampSystems[j].label(label[j][i], i);
+            Timestamp newLabel = new LBakeryTimestamp(((LBakeryTimestamp)max).getValue() + 1, i);
+            label[j][i].set(newLabel);
+            timestampSystems[j].label(newLabel, i);
             for (int k = 0; k < n; k++) {
-                while ((flag[j][k].get() && k != i && label[j][i].compare(label[j][k])) || activeThreads.get() >= l) {
+                while ((flag[j][k].get() && k != i && label[j][i].get().compare(label[j][k].get())) || activeThreads.get() >= l) {
                     Thread.yield();
                 }
             }
