@@ -21,7 +21,7 @@ public class Peterson implements Lock{
         int j = 1-i;
         flag[i].set(true);
         victim.set(i);
-        while(flag[j].get() && victim.get() == i);
+        while(flag[j].get() && victim.get() == i) Thread.yield();
     }
 
     @Override

@@ -15,7 +15,7 @@ public class LBakery implements Lock {
     private volatile Timestamp[][] label;
     private volatile TimestampSystem[] timestampSystems;
     public LBakery(){
-        this(2,2);
+        this(Runtime.getRuntime().availableProcessors(),Runtime.getRuntime().availableProcessors());
     }
     public LBakery(int l, int n) {
         this.l = l;
