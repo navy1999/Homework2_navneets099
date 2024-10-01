@@ -8,6 +8,9 @@ public class TreePeterson implements Lock {
     private int n;
     private volatile int[] path;
 
+    public TreePeterson() {
+        this(Runtime.getRuntime().availableProcessors());
+    }
     public TreePeterson(int n) {
         this.n = n;
         this.locks = new Peterson[n - 1];
@@ -21,8 +24,8 @@ public class TreePeterson implements Lock {
 
     @Override
     public void lock() {
-        int id = ((ThreadId) Thread.currentThread()).getThreadId();
-        int node = id + n - 1;
+        int i = ((ThreadId) Thread.currentThread()).getThreadId();
+        int node = i + n - 1;
         int level = 0;
 
 

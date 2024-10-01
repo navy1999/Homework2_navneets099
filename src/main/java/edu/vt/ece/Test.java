@@ -17,7 +17,7 @@ public class Test {
     private static final String LBAKERY = "LBakery";
 
     public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-        String lockClass = (args.length==0 ? LBAKERY : args[0]);
+        String lockClass = (args.length==0 ? BAKERY : args[0]);
         final Counter counter = new SharedCounter(0, (Lock)Class.forName("edu.vt.ece.locks." + lockClass).newInstance());
         for(int t=0; t<THREAD_COUNT; t++)
             new TestThread(counter).start();

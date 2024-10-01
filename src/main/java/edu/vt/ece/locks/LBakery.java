@@ -14,6 +14,9 @@ public class LBakery implements Lock {
     private volatile AtomicBoolean[][] flag;
     private volatile Timestamp[][] label;
     private volatile TimestampSystem[] timestampSystems;
+    public LBakery(){
+        this(2,2);
+    }
     public LBakery(int l, int n) {
         this.l = l;
         this.n = n;
@@ -42,7 +45,7 @@ public class LBakery implements Lock {
             timestampSystems[j].label(label[j][i], i);
             for (int k = 0; k < n; k++) {
                 while ((flag[j][k].get() && k != i && label[j][i].compare(label[j][k])) || activeThreads.get() >= l) {
-
+                    Thread.yield();
                 }
             }
             activeThreads.incrementAndGet();

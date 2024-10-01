@@ -7,17 +7,17 @@ import edu.vt.ece.bench.ThreadId;
 public class Filter implements Lock{
     private AtomicInteger[] level;
     private AtomicInteger[] victim;
-
+    private int n;
     public Filter() {
-        this(2);
+        this(Runtime.getRuntime().availableProcessors());
     }
 
     public Filter(int n){
         level = new AtomicInteger[n];
         victim = new AtomicInteger[n];
         for (int i = 0; i < n; i++) {
-            level[i] = new AtomicInteger();
-            victim[i] = new AtomicInteger();
+            level[i] = new AtomicInteger(0);
+            victim[i] = new AtomicInteger(0);
         }
     }
 
