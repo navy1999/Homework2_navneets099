@@ -14,7 +14,7 @@ public class TreePeterson implements Lock {
     public TreePeterson(int n) {
         this.n = n;
         this.locks = new Peterson[n - 1];
-        this.path = new int[(int) (Math.log(n) / Math.log(2)) + 1];
+        this.path = new int[(int)(Math.log(n) / Math.log(2)) + 1];
 
 
         for (int i = 0; i < locks.length; i++) {
@@ -35,6 +35,7 @@ public class TreePeterson implements Lock {
             path[level++] = parent;
             node = parent;
         }
+        System.out.println("Thread :" + Thread.currentThread().getId() + " locked " + locks.length + " lock nodes" );
     }
 
     @Override

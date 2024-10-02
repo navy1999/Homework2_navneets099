@@ -9,10 +9,15 @@ public class Peterson implements Lock{
     private volatile AtomicBoolean flag[] = new AtomicBoolean[2];
     private volatile AtomicInteger victim;
 
-    public Peterson() {
+    Peterson left;
+    Peterson right;
+    Peterson parent;
+    public Peterson( ) {
         flag[0] = new AtomicBoolean();
         flag[1] = new AtomicBoolean();
         victim = new AtomicInteger();
+
+
     }
 
     @Override
