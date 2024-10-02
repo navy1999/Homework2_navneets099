@@ -9,7 +9,7 @@ public class TreePeterson implements Lock {
     private volatile int[] path;
 
     public TreePeterson() {
-        this(Runtime.getRuntime().availableProcessors());
+        this(16);
     }
     public TreePeterson(int n) {
         this.n = n;
